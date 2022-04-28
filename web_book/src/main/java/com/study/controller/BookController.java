@@ -69,7 +69,7 @@ public class BookController {
 			if(service.bookDelete(code)) {
 				return "redirect:/book/list";
 			}
-			return "/book/delete";
+			return "redirect:/book/delete";
 		}
 		
 		//도서업데이트
@@ -84,20 +84,21 @@ public class BookController {
 			if(service.bookUpdate(code,price)) {
 				return "redirect:/book/list";
 			}
-			return "/book/update";	
+			return "redirect:/book/update"; //얘도 redirect 처리해주셈	
 		}
 		
 		//도서검색
 		
 		@GetMapping("/search")
-		public void Search() {
-			
+		public void SearchGet() {
+			log.info("도서 검색 페이지");
 		}
-		
+		@PostMapping("/search")           //select , name 의 값   ↓이게 객체 생성하는거랑 똑같다
 		public String SearchPost(String criteria,String keyword,Model model) {
-			
+			log.info("검색요청 : "+criteria+keyword); //오류 찾을때 이걸 쓰세요.
 			List<BookDTO> list=service.getSearchList(criteria, keyword);
-			
-			return "/book/update";	
+			model.addAttribute("list", list);
+			return "/book/list";	//forward방식 (걍 페이지로 바로 보내버리는거)
+			// return "redirect:/book/list"; //컨트롤러로 보내버려서 그거에 맞는 get을 찾는거
 		}
 }
