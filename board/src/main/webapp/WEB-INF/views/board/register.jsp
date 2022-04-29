@@ -36,5 +36,6 @@
                 		</div>
                 	</div>
                 </div>
-            </div>           
+            </div>         
+            <!-- <script src="/resources/js/regist.js"></script> -->  
 <%@include file="../includes/footer.jsp" %>       

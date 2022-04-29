@@ -1,9 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.study.mapper.BoardMapper">
-<select id="getList" resultType="com.study.dto.BoardDTO">
+
+
+
+<!-- page나누기 안할때의 select -->
+<!-- <select id="getList" resultType="com.study.dto.BoardDTO">
 	select bno,title,writer,regdate,updatedate from spring_board
 	where bno>0 order by bno desc
+</select> -->
+<select id="getList" resultType="com.study.dto.BoardDTO">
+	<![CDATA[
+select bno,title,writer,regdate,updatedate
+from (
+	select /*+INDEX_DESC(spring_board pk_spring_board)*/rownum rn,bno,title,writer,regdate,updatedate
+	from spring_board
+	where bno>0 and rownum<= (#{pageNum}*#{amount}))
+where rn>(#{pageNum}-1)*#{amount}
+]]> <!-- 여기 꺽쇠안에 들어온 애들은 태그가 아니야~! -->
 </select>
 
+<select id="totalCnt" resultType="int">
+	select count(*) from spring_board where bno>0
+</select>
+
+
+<insert id="insert">
+<!-- selectKey가 하는 짓은: 주로 pk값을 미리 실행한 후 특정 이름으로 보관해준다...(mybatis제공)
+	-keyPropert : 결과값이 세팅될 대상 프로퍼티.
+	-order:키릘 먼저 조회해줘.. (before)
+	
+ -->
+	<!-- bno발행 -->
+	<selectKey keyProperty="bno" order="BEFORE" resultType="int">
+	select seq_board.nextval from dual
+	</selectKey>
+	<!-- 먼저 발행을해줬으니까 bno값도 따서 가져오면 됨..
+	
+	 -->
+	insert into spring_board(bno,title,content,writer) 
+	values(#{bno},#{title},#{content},#{writer})
+</insert>
+
+<select id="selectList" resultType="com.study.dto.BoardDTO">
+	select bno,title,content,writer from spring_board where bno=#{bno}
+</select>
+<!-- content title updatedate 수정 -->
+<update id="update">
+	update spring_board set title=#{title},content=#{content},updatedate=sysdate
+	where bno=#{bno}
+</update>
+
+<delete id="delete">
+	delete from spring_board where bno=#{bno}
+</delete>
 </mapper>

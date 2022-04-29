@@ -20,19 +20,19 @@
                 			<form action="" method="post" role="form">
                 				<div class="form-group">
                 					<label>Bno</label>
-                					<input class="form-control" name="bno" readonly="readonly">                				
+                					<input class="form-control" name="bno" readonly="readonly" value="${selectDto.bno}" >                				
                 				</div> 
                 				<div class="form-group">
                 					<label>Title</label>
-                					<input class="form-control" name="title">                				
+                					<input class="form-control" name="title" value="${selectDto.title}">                				
                 				</div>  
                 				<div class="form-group">
                 					<label>Content</label>
-                					<textarea class="form-control" rows="3" name="content"></textarea>               				
+                					<textarea class="form-control" rows="3" name="content">${selectDto.content}</textarea>               				
                 				</div> 
                 				<div class="form-group">
                 					<label>Writer</label>
-                					<input class="form-control" name="writer" readonly="readonly">                				
+                					<input class="form-control" name="writer" readonly="readonly" value="${selectDto.writer}">                				
                 				</div>  
                 				<button type="submit" data-oper='modify' class="btn btn-default">Modify</button>              			
                 				<button type="submit" data-oper='remove' class="btn btn-danger">Remove</button>              			
@@ -43,6 +43,9 @@
                 </div>
             </div>
 			<%-- remove와 list를 위한 폼--%>
-
+		 <form action="" id="operForm">
+            	<input type="hidden" value="${selectDto.bno}" name="bno" />
+            </form>
 			<%-- 스크립트 --%>
+			<script src="/resources/js/modify.js"></script>
 <%@include file="../includes/footer.jsp" %>       

@@ -8,6 +8,6 @@
 </head>
 <body>
 <h2>Spring mvc 게시판</h2>
-<a href="/board/list">전체 리스트</a>
+<a href="/board/list?pageNum=1">전체 리스트</a>
 </body>
 </html>
